@@ -1,0 +1,2 @@
+module ProfilifyHelper
+end
