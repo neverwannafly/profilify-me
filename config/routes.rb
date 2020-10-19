@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root 'landing#index'
 
-  get 'landing/index'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  get 'landing/index' => 'landing#index'
+  
+  post 'user/login' => 'user#login'
+  post 'user/register' => 'user#register'
 end
