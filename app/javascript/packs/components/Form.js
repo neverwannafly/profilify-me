@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
@@ -10,7 +11,8 @@ import {
   doPasswordsMatch,
   isStringValid,
 } from '../utils/validators';
-import { dispatchNotification, ERROR_TOAST } from '../utils/toast';
+import { dispatchNotification, ERROR_TOAST, SUCCESS_TOAST } from '../utils/toast';
+import authManager from '../utils/auth';
 
 export const LOGIN_MODE = 'LOGIN_MODE';
 export const REGISTER_MODE = 'REGISTER_MODE';
@@ -18,6 +20,7 @@ export const REGISTER_MODE = 'REGISTER_MODE';
 const Form = ({
   mode, onModeSwitch
 }) => {
+  const history = useHistory();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -48,18 +51,26 @@ const Form = ({
   const handleFormFailure = (error = 'Network Error') => {
     dispatchNotification(error, ERROR_TOAST);
   };
+  
+  const handleFormSuccess = (username) => {
+    dispatchNotification(`Welcome back ${username}`, SUCCESS_TOAST);
+  }
 
   const handleSubmit = async () => {
     let url = mode === REGISTER_MODE ? `user/register` : `user/login`;
 
     try {
-      const response = await request('POST', url, 'user', formData);
+      const response = await request('POST', url, 'user', authManager.attachUser(formData));
       if (response.success) {
-
+        authManager.setUser(response);
+        const { username } = authManager;
+        history.push(`${username}`);
+        handleFormSuccess(username)
       } else {
         handleFormFailure(response.error);
       }
-    } catch {
+    } catch(error) {
+      console.log(error)
       handleFormFailure();
     }
   };
