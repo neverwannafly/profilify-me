@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :null_session
+  skip_before_action :verify_authenticity_token
   helper_method :current_user, :authenticate!
 
   def set_user(user_id)
@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate!
     is_valid = !!(current_user && current_user.authenticate(extract_params(:user, :password)))
-    response = { success: is_valid }
+    response = { success: is_valid, error: 'Authentication failed' }
     response = response.merge(current_user.basic_data) if is_valid
     return response
   end

@@ -3,12 +3,14 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import PasswordField from './PasswordField';
+import { request } from '../utils/api';
 import {
   isUsernameValid,
   isEmailValid,
   doPasswordsMatch,
   isStringValid,
 } from '../utils/validators';
+import { dispatchNotification, ERROR_TOAST } from '../utils/toast';
 
 export const LOGIN_MODE = 'LOGIN_MODE';
 export const REGISTER_MODE = 'REGISTER_MODE';
@@ -41,6 +43,25 @@ const Form = ({
   const renderOnRegister = (elem) => {
     if (mode === REGISTER_MODE) return elem;
     return null;
+  };
+
+  const handleFormFailure = (error = 'Network Error') => {
+    dispatchNotification(error, ERROR_TOAST);
+  };
+
+  const handleSubmit = async () => {
+    let url = mode === REGISTER_MODE ? `user/register` : `user/login`;
+
+    try {
+      const response = await request('POST', url, 'user', formData);
+      if (response.success) {
+
+      } else {
+        handleFormFailure(response.error);
+      }
+    } catch {
+      handleFormFailure();
+    }
   };
 
   return (
@@ -125,6 +146,7 @@ const Form = ({
           variant="outlined"
           color="primary"
           className="landing__buttons"
+          onClick={handleSubmit}
         >
           { mode === REGISTER_MODE ? "REGISTER" : "LOGIN" }
         </Button>

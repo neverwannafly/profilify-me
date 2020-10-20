@@ -1,12 +1,15 @@
 class UserController < ApplicationController
   def login
     user = User.find_by(username: extract_params(:user, :username))
+    render json: { success: false, error: 'Account doesnt exist' } and return if user.blank? 
     set_user(user&.id)
     render json: authenticate!
   end
 
   def register
-    user = User.create!(user_params)
+    user = User.new user_params
+    render json: { success: false, error: user.errors.full_messages.first } and return unless user.valid?
+    user.save!
     set_user(user.id)
     render json: authenticate!
   end

@@ -1,30 +1,15 @@
-export const request = async (method, url, namespace, body = null) => {
-  return fetch(url, {
-    method,
-    body: serializeQuery(body, namespace),
-  });
+export const dispatchNetworkError = () => ({ success: false, error: 'Network Error' });
+
+export const parseJsonResponse = async (data) => {
+  const response = await data.json();
+  return response;
 };
 
-export const serializeQuery = (params, namespace) => {
-  if(params === null) return null;
-
-  const query = Object.keys(params).map((key) => {
-    const value  = params[key];
-
-    if (params.constructor === Array) {
-      key = `${namespace}[]`;
-    }
-    else if (params.constructor === Object) {
-      key = (namespace ? `${namespace}[${key}]` : key);
-    }
-
-    if (typeof value === 'object') {
-      return serializeQuery(value, key);
-    }
-    else {
-      return `${key}=${encodeURIComponent(value)}`;
-    }
+export const request = async (method, url, namespace, body = null) => {
+  const data = await fetch(url, {
+    method,
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ [namespace]:  body }),
   });
-
-  return [].concat.apply([], query).join('&');
-}
+  return parseJsonResponse(data);
+};

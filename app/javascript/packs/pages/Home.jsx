@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Modal from '../components/Modal';
 import Form, { REGISTER_MODE, LOGIN_MODE } from '../components/Form';
-
-import { request } from '../utils/api';
+import Toast from '../utils/toast';
 
 import landingBanner from 'images/landing-banner.svg';
 
@@ -65,6 +64,7 @@ const Home = () => {
           onModeSwitch={handleModeSwitch}
         />
       </Modal>
+      <Toast />
     </div>
   )
 };
