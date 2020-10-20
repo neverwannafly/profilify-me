@@ -6,10 +6,12 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const PasswordField = ({
-  showPassword, value, onChange, id,
+  showPassword, value, onChange, id, error,
   onClickShowPassword, onMouseDownPassword, label,
 }) => (
   <TextField
+    required
+    error={error}
     variant='filled'
     id={id}
     type={showPassword ? 'text' : 'password'}

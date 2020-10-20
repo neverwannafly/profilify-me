@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import Button from '@material-ui/core/Button';
 import Modal from '../components/Modal';
-import Form from '../components/Form';
+import Form, { REGISTER_MODE, LOGIN_MODE } from '../components/Form';
 
 import { request } from '../utils/api';
 
@@ -10,9 +10,13 @@ import landingBanner from 'images/landing-banner.svg';
 
 const Home = () => {
   const [modalState, setState] = useState(false);
+  const [formMode, setFormMode] = useState(REGISTER_MODE);
 
   const handleOpen = () => setState(true);
   const handleClose = () => setState(false);
+  const handleModeSwitch = () => {
+    formMode === REGISTER_MODE ? setFormMode(LOGIN_MODE) : setFormMode(REGISTER_MODE);
+  }
 
   return (
     <div className="landing">
@@ -56,7 +60,10 @@ const Home = () => {
         open={modalState}
         handleClose={handleClose}
       >
-        <Form />
+        <Form
+          mode={formMode}
+          onModeSwitch={handleModeSwitch}
+        />
       </Modal>
     </div>
   )

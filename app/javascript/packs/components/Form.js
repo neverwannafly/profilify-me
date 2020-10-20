@@ -7,13 +7,14 @@ import {
   isUsernameValid,
   isEmailValid,
   doPasswordsMatch,
+  isStringValid,
 } from '../utils/validators';
 
 export const LOGIN_MODE = 'LOGIN_MODE';
 export const REGISTER_MODE = 'REGISTER_MODE';
 
 const Form = ({
-  mode
+  mode, onModeSwitch
 }) => {
   const [formData, setFormData] = useState({
     username: '',
@@ -37,41 +38,63 @@ const Form = ({
     event.preventDefault();
   };
 
+  const renderOnRegister = (elem) => {
+    if (mode === REGISTER_MODE) return elem;
+    return null;
+  };
+
   return (
     <form className='form-control' noValidate autoComplete="off">
       <div className='form-header'>
-        <h2>Register to get started!</h2>
+        <h2>
+          {mode===REGISTER_MODE ?
+            'Register to get started!' : 'Login to your account'}
+        </h2>
       </div>
-      <div className='form-input no-margin'>
-        <div className='form-group'>
-          <TextField
-            label="First Name"
-            variant="filled"
-            onChange={handleChange('first_name')}
-          />
-          <TextField
-            label="Last Name"
-            variant="filled"
-            onChange={handleChange('last_name')}
-          />
+      {renderOnRegister(
+        <div className='form-input no-margin'>
+          <div className='form-group'>
+            <TextField
+              required
+              error={!isStringValid(formData.first_name)}
+              label="First Name"
+              variant="filled"
+              onChange={handleChange('first_name')}
+            />
+            <TextField
+              required
+              error={!isStringValid(formData.last_name)}
+              label="Last Name"
+              variant="filled"
+              onChange={handleChange('last_name')}
+            />
+          </div>
         </div>
-      </div>
+      )}
+
       <div className='form-input'>
         <TextField
+          required
+          error={!isUsernameValid(formData.username)}
           label="Username"
           variant="filled"
           onChange={handleChange('username')}
         />
       </div>
-      <div className='form-input'>
-        <TextField
-          label="Email"
-          variant="filled"
-          onChange={handleChange('email')}
-        />
-      </div>
+      {renderOnRegister(
+        <div className='form-input'>
+          <TextField
+            required
+            error={!isEmailValid(formData.email)}
+            label="Email"
+            variant="filled"
+            onChange={handleChange('email')}
+          />
+        </div>
+      )}
       <div className='form-input'>
         <PasswordField
+          error={!doPasswordsMatch(formData.password, formData.password_confirm)}
           showPassword={formData.show_password}
           value={formData.password}
           onChange={handleChange('password')}
@@ -81,17 +104,21 @@ const Form = ({
           id='password'
         />
       </div>
-      <div className='form-input'>
-        <PasswordField
-          showPassword={formData.show_password}
-          value={formData.password_confirm}
-          onChange={handleChange('password_confirm')}
-          onClickShowPassword={handleClickShowPassword}
-          onMouseDownPassword={handleMouseDownPassword}
-          label='Confirm Password'
-          id='password_confirm'
-        />
-      </div>
+      {renderOnRegister(
+        <div className='form-input'>
+          <PasswordField
+            error={!doPasswordsMatch(formData.password, formData.password_confirm)}
+            showPassword={formData.show_password}
+            value={formData.password_confirm}
+            onChange={handleChange('password_confirm')}
+            onClickShowPassword={handleClickShowPassword}
+            onMouseDownPassword={handleMouseDownPassword}
+            label='Confirm Password'
+            id='password_confirm'
+          />
+        </div>
+      )}
+      
       <div className='form-actions'>
         <Button
           size="medium"
@@ -99,15 +126,16 @@ const Form = ({
           color="primary"
           className="landing__buttons"
         >
-          Register
+          { mode === REGISTER_MODE ? "REGISTER" : "LOGIN" }
         </Button>
         <Button
           size="medium"
           variant="outlined"
           color="secondary"
           className="landing__buttons"
+          onClick={onModeSwitch}
         >
-          Already a member? Login!
+          { mode === REGISTER_MODE ? "Already a member? Login" : "Create new account" }
         </Button>
       </div>
     </form>
