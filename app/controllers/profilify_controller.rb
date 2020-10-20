@@ -1,3 +1,3 @@
 class ProfilifyController < ApplicationController
-  before_request :validate_request
+  before_action :validate_request
 end
