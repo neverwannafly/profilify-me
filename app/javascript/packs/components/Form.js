@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 import PasswordField from './PasswordField';
 import {
@@ -90,6 +91,24 @@ const Form = ({
           label='Confirm Password'
           id='password_confirm'
         />
+      </div>
+      <div className='form-actions'>
+        <Button
+          size="medium"
+          variant="outlined"
+          color="primary"
+          className="landing__buttons"
+        >
+          Register
+        </Button>
+        <Button
+          size="medium"
+          variant="outlined"
+          color="secondary"
+          className="landing__buttons"
+        >
+          Already a member? Login!
+        </Button>
       </div>
     </form>
   );
