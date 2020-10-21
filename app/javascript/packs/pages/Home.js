@@ -1,24 +1,33 @@
 import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 
 import Button from '@material-ui/core/Button';
 
 import Modal from '../components/Modal';
 import Form, { REGISTER_MODE, LOGIN_MODE } from '../components/Form';
+import authManager from '../utils/auth';
 
 import landingBanner from 'images/landing-banner.svg';
 
 const Home = () => {
   const [modalState, setState] = useState(false);
   const [formMode, setFormMode] = useState(REGISTER_MODE);
+  const history = useHistory();
 
-  const handleOpen = () => setState(true);
+  const handleOpen = () => {
+    if (authManager.isLoggednIn()) {
+      history.push(`${authManager.authData.username}`);
+    } else {
+      setState(true);
+    }
+  }
   const handleClose = () => setState(false);
   const handleModeSwitch = () => {
     formMode === REGISTER_MODE ? setFormMode(LOGIN_MODE) : setFormMode(REGISTER_MODE);
   }
 
   return (
-    <div className="landing">
+    <div className="landing container">
       <div className="landing__banner">
         <img src={landingBanner} />
       </div>

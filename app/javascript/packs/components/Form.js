@@ -63,7 +63,7 @@ const Form = ({
       const response = await request('POST', url, 'user', authManager.attachUser(formData));
       if (response.success) {
         authManager.setUser(response);
-        const { username } = authManager;
+        const { username } = authManager.authData;
         history.push(`${username}`);
         handleFormSuccess(username)
       } else {

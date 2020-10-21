@@ -11,3 +11,14 @@ html, body {
 h1 {
   font-size: 3rem;
 }
+
+.container {
+  padding: 0 2rem;
+  max-width: 1250px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.right-element {
+  margin-left: auto!important;
+}
