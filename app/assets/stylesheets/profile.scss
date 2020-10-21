@@ -1,0 +1,72 @@
+$dark-background:  rgb(20, 36, 52);
+$light-background: rgb(33, 61, 85);
+$light-blue-color: rgb(98, 188, 166);
+$light-font-color: white;
+
+.profile {
+  color: $light-font-color;
+
+  &__body {
+    background-color: $dark-background;
+    padding: 1rem;
+  }
+
+  &__section {
+    background-color: $light-background;
+    padding: 2rem;
+
+    &--dark {
+      background-color: $dark-background;
+    }
+  }
+
+  &__header {
+    padding: 0.5rem 0;
+    color: $light-blue-color;
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+
+  &__subheader {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  &__picture {
+    position: relative;
+    margin-top: 3rem;
+  }
+
+  &__icontainer {
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 15rem;
+    height: 15rem;
+    background-color: $light-blue-color;
+    border-radius: 50%;
+    box-shadow: 0px 0px 77px -36px rgba(77,75,77,1);
+  }
+
+  &__tcontainer {
+    display: block;
+    position: absolute;
+    width: 14rem;
+    height: 14rem;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $light-background;
+    border-radius: 50%;
+  }
+
+  &__img {
+    display: block;
+    position: absolute;
+    width: 13rem;
+    height: 13rem;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+}
