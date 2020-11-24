@@ -5,6 +5,7 @@ $light-font-color: white;
 
 .profile {
   color: $light-font-color;
+  font-size: 1.4rem;
 
   &__body {
     background-color: $dark-background;
@@ -68,5 +69,17 @@ $light-font-color: white;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 50%;
+  }
+
+  &__social {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+    margin-left: -1rem;
+  }
+
+  &__social-icon {
+    margin: 0 1rem;
+    cursor: pointer;
   }
 }

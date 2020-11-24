@@ -6,6 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 import HomeIcon from '../components/HomeIcon';
+import InboxIcon from '@material-ui/icons/Inbox';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import Tooltip from '@material-ui/core/Tooltip';
 import authUser from '../utils/auth';
 
 const Menubar = () => {
@@ -19,16 +22,34 @@ const Menubar = () => {
           startIcon={<HomeIcon />}
           onClick={() => history.push('/')}
         />
-        <Typography variant="h6">
-          { authUser.authData.username }
-        </Typography>
         <Button
-          className="right-element"
           color="inherit"
-          onClick={() => {authUser.clearUser(); history.push('/')}}
+          onClick={() => history.push(`/u/${authUser.authData.username}`)}
         >
-          Logout
+          <Typography variant="h6"> { authUser.authData.username } </Typography>
         </Button>
+        <div className="right-element">
+          <Tooltip title="New Post">
+            <Button
+              color="inherit"
+              startIcon={<AddCircleOutlineIcon />}
+              onClick={() => history.push('/post')}
+            />
+          </Tooltip>
+          <Tooltip title="Inbox">
+            <Button
+              color="inherit"
+              startIcon={<InboxIcon />}
+              onClick={() => history.push('/inbox')}
+            />
+          </Tooltip>
+          <Button
+            color="inherit"
+            onClick={() => {authUser.clearUser(); history.push('/')}}
+          >
+            Logout
+          </Button>
+        </div>
       </Toolbar>
     </AppBar>
   );

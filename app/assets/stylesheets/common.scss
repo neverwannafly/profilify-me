@@ -14,7 +14,7 @@ h1 {
 
 .container {
   padding: 0 2rem;
-  max-width: 1250px;
+  max-width: 1024px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -26,4 +26,17 @@ h1 {
 
 .right-element {
   margin-left: auto!important;
+}
+
+.row {
+  display: flex;
+
+  &.reverse {
+    flex-direction: row-reverse;
+  }
+
+  &.center {
+    align-items: center;
+    justify-content: space-between;
+  }
 }

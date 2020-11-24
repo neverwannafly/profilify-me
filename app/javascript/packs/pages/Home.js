@@ -16,7 +16,7 @@ const Home = () => {
 
   const handleOpen = () => {
     if (authManager.isLoggednIn()) {
-      history.push(`${authManager.authData.username}`);
+      history.push(`/u/${authManager.authData.username}`);
     } else {
       setState(true);
     }
@@ -52,7 +52,7 @@ const Home = () => {
             className="landing__buttons"
             onClick={handleOpen}
           >
-            Create Profile
+            { authManager.isLoggednIn() ? "View Profile" : "Create Profile" }
           </Button>
           <Button
             size="large"
