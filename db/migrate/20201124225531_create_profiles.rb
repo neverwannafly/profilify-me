@@ -1,6 +1,7 @@
 class CreateProfiles < ActiveRecord::Migration[6.0]
   def change
     create_table :profiles do |t|
+      t.references :user
       t.string :linkedin
       t.string :github
       t.string :facebook

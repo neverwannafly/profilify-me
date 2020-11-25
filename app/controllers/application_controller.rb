@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
 
   def current_user
     user_id = extract_params(:user, :id)
+    user_token = extract_params(:user, :token)
     if user_id && user_token
       @current_user ||= User.find_by(:id => user_id)
     end

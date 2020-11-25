@@ -1,23 +1,113 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 
 // Icons
-import TwitterIcon from '@material-ui/icons/Twitter';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import LinkIcon from '@material-ui/icons/Link';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
+import AddIcon from '@material-ui/icons/Add';
+import Button from '@material-ui/core/Button';
 
 import Menubar from '../components/Menubar';
-import authUser from '../utils/auth';
+import ProfileUi from '../components/ProfileUi';
+import Post from '../components/Post';
+
+import { extractUsername } from '../utils/string';
+import { request } from '../utils/api';
+import authManager from '../utils/auth';
 
 const Profile = () => {
+
+  const [isLoading, setLoading] = useState(true);
+  const [pageData, setPageData] = useState({});
+  const [postData, setPostData] = useState(null);
+  const profileUsername = extractUsername(window.location.pathname);
 
   const history = useHistory();
 
   useEffect(() => {
+    async function fetchProfile() {
+      const url = `/profile/u/${profileUsername}/${authManager.authData.id}`;
+      try {
+        const response = await request('GET', url);
+        console.log(response);
+        setPageData(response);
+        setLoading(false);
+      } catch(error) {
+        console.log(error);
+      }
+    }
+    async function fetchPosts() {
+      const url = `/posts/${profileUsername}/${authManager.authData.id}`;
+      try {
+        const response = await request('GET', url);
+        setPostData(response);
+        console.log(response);
+      } catch(error) {
+        console.log(error);
+      }
+    }
+    fetchProfile();
+    fetchPosts();
+  }, []);
 
-  });
+  if (isLoading) {
+    return (
+      <div className="profile">
+        <div className="container">
+          <Menubar />
+        </div>
+        <div className="container y-margin">
+          <div className="loader">
+            <CircularProgress />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const isProfile = (pageData.profile === null || pageData.profile === undefined || pageData.profile === {});
+  if (isProfile && authManager.authData.id === pageData.owner) {
+    return (
+      <div className="profile">
+        <div className="container">
+          <Menubar />
+        </div>
+        <div className="container y-margin">
+          <div className="loader">
+            <Button
+              startIcon={<AddIcon />}
+              variant="contained"
+              color="secondary"
+              onClick={() => history.push('/profile')}
+            >
+              Create Profile
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isProfile && authManager.authData.id !== pageData.owner) {
+    return (
+      <div className="profile">
+        <div className="container">
+          <Menubar />
+        </div>
+        <div className="container y-margin">
+          <div className="loader">
+            Profile doesnt exist!
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const profile = {
+    ...pageData.profile,
+    likes: pageData.likes,
+    liked: pageData.liked_by_source,
+  };
 
   return (
     <div className="profile">
@@ -25,41 +115,14 @@ const Profile = () => {
         <Menubar />
       </div>
       <div className="container y-margin">
-        <div className="profile__body">
-          <div className="profile__section">
-            <div className="row reverse center">
-              <div>
-                <div className="profile__header">
-                  Kyojoro Rengoku
-                </div>
-                <div className="profile__subheader">
-                  Flame Hashira
-                </div>
-                <div className="profile__social">
-                  <div className="profile__social-icon"><FacebookIcon /></div>
-                  <div className="profile__social-icon"><GitHubIcon /></div>
-                  <div className="profile__social-icon"><LinkedInIcon /></div>
-                  <div className="profile__social-icon"><TwitterIcon /></div>
-                </div>
-              </div>
-              <div className="profile__picture">
-                <div className="profile__icontainer">
-                  <div className="profile__tcontainer"/>
-                  <img className="profile__img" src="https://i.pinimg.com/736x/fd/3b/fa/fd3bfa456f2b4f6314b69d9b1803c3e0.jpg"/>
-                </div>
-              </div>
-            </div>
+        {ProfileUi(profile)}
+      </div>
+      <div className="container y-margin">
+        {postData && postData.posts.map(post => (
+          <div key={post.id}>
+            {Post(post)}
           </div>
-          <div className="profile__section profile__section--dark">
-            Kyojuro is greatly enthusiastic in regard to his duties as a Hashira, 
-            and often came across as cheerfully eccentric. He is amiable, kind and 
-            boasted extraordinary technique and swordsmanship stemming from strict 
-            practice and discipline. He is an honorable warrior who adhered to his 
-            code of morals and principles that was instilled into him by his mother 
-            at a young age—the most significant being his belief that those who 
-            were born strong have a duty to protect the weak.
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

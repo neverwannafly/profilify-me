@@ -9,6 +9,9 @@ import HomeIcon from '../components/HomeIcon';
 import InboxIcon from '@material-ui/icons/Inbox';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Tooltip from '@material-ui/core/Tooltip';
+import EditIcon from '@material-ui/icons/Edit';
+import ExploreOutlinedIcon from '@material-ui/icons/ExploreOutlined';
+
 import authUser from '../utils/auth';
 
 const Menubar = () => {
@@ -29,6 +32,13 @@ const Menubar = () => {
           <Typography variant="h6"> { authUser.authData.username } </Typography>
         </Button>
         <div className="right-element">
+          <Tooltip title="Explore Profiles">
+            <Button
+              color="inherit"
+              startIcon={<ExploreOutlinedIcon />}
+              onClick={() => history.push('/explore')}
+            />
+          </Tooltip>
           <Tooltip title="New Post">
             <Button
               color="inherit"
@@ -36,11 +46,11 @@ const Menubar = () => {
               onClick={() => history.push('/post')}
             />
           </Tooltip>
-          <Tooltip title="Inbox">
+          <Tooltip title="Edit Profile">
             <Button
               color="inherit"
-              startIcon={<InboxIcon />}
-              onClick={() => history.push('/inbox')}
+              startIcon={<EditIcon />}
+              onClick={() => history.push('/profile')}
             />
           </Tooltip>
           <Button

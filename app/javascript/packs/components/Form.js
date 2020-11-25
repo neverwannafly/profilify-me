@@ -54,13 +54,15 @@ const Form = ({
   
   const handleFormSuccess = (username) => {
     dispatchNotification(`Welcome back ${username}`, SUCCESS_TOAST);
-  }
+  };
 
   const handleSubmit = async () => {
     let url = mode === REGISTER_MODE ? `user/register` : `user/login`;
 
     try {
-      const response = await request('POST', url, 'user', authManager.attachUser(formData));
+      const response = await request('POST', url, {
+        user: authManager.attachUser(formData),
+      });
       if (response.success) {
         authManager.setUser(response);
         const { username } = authManager.authData;

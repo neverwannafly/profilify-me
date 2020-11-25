@@ -22,7 +22,7 @@ function AuthManager() {
     window.sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(this.authData));
   }
 
-  this.attachUser = (payload) => {
+  this.attachUser = (payload = null) => {
     return {
       ...payload,
       id: this.authData.id,

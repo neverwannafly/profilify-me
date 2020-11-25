@@ -5,11 +5,14 @@ export const parseJsonResponse = async (data) => {
   return response;
 };
 
-export const request = async (method, url, namespace, body = null) => {
-  const data = await fetch(url, {
+export const request = async (method, url, body = null) => {
+  let payload = {
     method,
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ [namespace]:  body }),
-  });
+  }
+  if (method !== 'GET') {
+    payload = {...payload, body: JSON.stringify(body) };
+  }
+  const data = await fetch(url, payload);
   return parseJsonResponse(data);
 };

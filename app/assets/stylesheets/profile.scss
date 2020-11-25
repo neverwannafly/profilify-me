@@ -83,3 +83,40 @@ $light-font-color: white;
     cursor: pointer;
   }
 }
+
+.like {
+  display: flex;
+  cursor: pointer;
+
+  &__count {
+    margin-left: .5rem;
+  }
+
+  &__visit {
+    margin-left: auto;
+    color: mediumspringgreen;
+    cursor: pointer;
+  }
+}
+
+.light-post {
+  background-color: white;
+  color: black;
+  margin-bottom: 1rem;
+
+  &__title{
+    color: white;
+    font-weight: bold;
+    padding: 1rem 2rem;
+    background: rgb(67, 80, 175);
+  }
+
+  &__content {
+    padding: 1rem 2rem;
+  }
+
+  &__like {
+    background-color: #d3d8ff;
+    padding: 1rem 2rem;
+  }
+}

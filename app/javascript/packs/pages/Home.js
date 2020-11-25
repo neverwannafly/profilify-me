@@ -59,6 +59,7 @@ const Home = () => {
             variant="contained"
             color="secondary"
             className="landing__buttons"
+            onClick={() => history.push('/explore')}
           >
             Explore Profiles
           </Button>
