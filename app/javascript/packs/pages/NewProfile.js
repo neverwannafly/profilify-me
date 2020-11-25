@@ -32,17 +32,17 @@ const NewProfile = () => {
       const response = await request('GET', url);
       if (response.profile !== null) {
         setMode('edit');
+        setFormData({
+          linkedin: response.profile.linkedin || '',
+          github: response.profile.github || '',
+          facebook: response.profile.facebook || '',
+          twitter: response.profile.twitter || '',
+          bio: response.profile.bio || '',
+          university: response.profile.university || '',
+          mottoa: response.profile.mottoa || '',
+          picture: response.profile.picture || '',
+        });
       }
-      setFormData({
-        linkedin: response.profile.linkedin || '',
-        github: response.profile.github || '',
-        facebook: response.profile.facebook || '',
-        twitter: response.profile.twitter || '',
-        bio: response.profile.bio || '',
-        university: response.profile.university || '',
-        mottoa: response.profile.mottoa || '',
-        picture: response.profile.picture || '',
-      });
       setLoading(false);
     }
     fetchProfile();
